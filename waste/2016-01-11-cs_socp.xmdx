@@ -1,0 +1,74 @@
+---
+layout: post
+title: "如何使用SeDuMi求解LP及SOCP问题？"
+description: "还是压缩感知中的问题，Candes在2005年的文章中，指出7个L1范数的最小化问题都可以化作LP问题或者SOCP的问题，这两个问题都可以采用优化算法软件包SeDuMi来求解。我看网上有很多人也关心这个SOCP问题的求解，《Sedumi 软件包在教学和科研中的应用》这篇文章中根本没有讲清楚该问题，符号和记号感觉很有些混乱，实际上是陆吾生老师英文pdf粗糙的翻译，错误百出，所以我就没有看到一个满意的答案。故，这篇博文的初衷就是解决这个问题，blog写到一半发现陆吾生老师的一个pdf，如获至宝。
+"
+category: '压缩感知'
+---
+
+
+#如何使用SeDuMi求解LP及SOCP问题？
+
+还是压缩感知中的问题，Candes在2005年的文章中，指出7个L1范数的最小化问题都可以化作LP问题或者SOCP的问题，这两个问题都可以采用优化算法软件包SeDuMi来求解。我看网上有很多人也关心这个SOCP问题的求解，《Sedumi 软件包在教学和科研中的应用》这篇文章中根本没有讲清楚该问题，符号和记号感觉很有些混乱，实际上是陆吾生老师英文pdf粗糙的翻译，错误百出，所以我就没有看到一个满意的答案。故，这篇博文的初衷就是解决这个问题，blog写到一半发现陆吾生老师的一个pdf，如获至宝。
+
+## 1. SeDuMi软件包介绍及下载
+官网上的介绍是这样的：SeDuMi is a great piece of software for optimization over symmetric cones。主要是基于Matlab开发的，很方便调用和原理验证，这个工作是很有意义的，只是可惜了软件包的作者英年早逝！再次提醒自己要锻炼和保重身体呀。现在地址可以[戳这里](http://sedumi.ie.lehigh.edu/).具体的安装和所有的Matlab插件一样的，放到一个位置然后add path即可。
+
+再次，下载地址见[http://sedumi.ie.lehigh.edu/](http://sedumi.ie.lehigh.edu/). 
+
+
+## 2. LP问题的SeDuMi求解
+
+但是使用这个软件包不是很容易。我们在上一篇博文中指出了LP问题的标准形式：
+
+$min_x \quad c^T x$
+
+$s.t\quad Ax=b$
+
+$\quad \quad x\geq 0$
+
+这个LP问题，调用SeDuMi就一句话即可解决！
+
+ `[xs,ys,info] = sedumi(A,b,c);`
+
+ 其中xs表示求出的稀疏向量表示的x；ys是表示对偶问题的乘子值（a vector of dual multipliers Y）；info 就是在求解过程中的一些基本信息（耗时、迭代次数等等）。
+
+## 3. SOCP问题的SeDuMi求解
+首先让我们来认识下SOCP的问题模型(为了避免符号的重复，我使用$e,f,g,H,r,s$等符号表示该问题)。
+
+$min_x \quad e^T x$
+
+$s.t. \quad D^T x + f\geq 0$
+
+$\quad \quad \|H_i^Tx+g_i\|_2\leq r_i^T x+s_i,i=1,2,3,...,q$
+
+这个SOCP问题，调用SeDuMi就一句话即可解决！
+
+ `[xs,ys,info] = sedumi(A,b,c,K);`
+
+###3.1 参数$A_{m\times n}$,其中m>n, m表示未知量x的个数，n表示约束个数
+ $A = [-D,-r_1,-H_1,-r_2,-H_2,...,-r_q,-H_q]$
+ 
+## 参数$b_{m\times 1}$
+ $b= -e$
+
+###3.2 参数$c_{n\times 1}$
+
+$c = [f;s_1;g_1;s_2;g_2;...;s_q;g_q]$
+
+###3.3 参数K
+ 参数K表示约束的形式及其个数，在这个模型中，我们只用设置其中两个参数：l和q。
+
+ `K.l = size（D,1）`（或者size（f），即线性不等式的个数）
+
+`K.q = q` (表示二阶锥的个数，我这里只采用一个锥，那么K.q = 1).
+
+## 4. 其他模型
+其他模型也是可以很好的用SeDuMi求解的，更多细节请参考最后一个的参考pdf。
+
+##参考文献
+- Donoho D L. Compressed sensing[J]. Information Theory, IEEE Transactions on, 2006, 52(4): 1289-1306.
+- Candes E, Romberg J. l1-magic: Recovery of sparse signals via convex programming[J]. URL: www. acm. caltech. edu/l1magic/downloads/l1magic. pdf, 2005, 4: 14.
+- [陆吾生老师主页](http://www.ece.uvic.ca/~wslu/)
+- [陆吾生老师百度文库讲稿：2010年华东理工的东西吧](http://wenku.baidu.com/link?url=vZw4rxcIrTEGsNTWWHBxV6R7AWV42okEvmHy16GOp7YRj101krhjmR0LftJmU8k2ExBgTb2qTycApiV3wMyCYzZfXKtAxML39lYU5-QJDK3)
+- [Use SeDuMi to Solve LP, SDP and SCOP Problems: Remarks and Examples*](http://www.ece.uvic.ca/~wslu/Talk/SeDuMi-Remarks.pdf)

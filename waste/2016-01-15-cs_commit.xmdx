@@ -1,0 +1,38 @@
+---
+layout: post
+title: "压缩感知何去何从？"
+description: "最近对压缩感知这个方法进行了一点调研和实践，发现这个方法存在诸多问题（尤其是在图像领域应用中，前提条件多、速度慢、内存要求高），在实际使用中还是很有局限的。个人从自身的体验和web of science的统计数据来看，压缩感知的技术的这股热火从06年烧了10年，已近差不多了。"
+category: '压缩感知'
+---
+
+
+#压缩感知何去何从？
+
+
+最近对压缩感知这个方法进行了一点调研和实践，发现这个方法存在诸多问题（尤其是在图像领域应用中，前提条件多、速度慢、内存要求高），在实际使用中还是很有局限的。个人从自身的体验和web of science的统计数据来看，压缩感知的技术的这股热火从06年烧了10年，已近差不多了。
+
+![](http://i.imgur.com/kDvqgCu.jpg)
+
+该图的横坐标为2006年-2015年，纵坐标为web of science 核心数据库对compressed sensing（CS）的发文数量。从该图中，可以看出CS的提出2005年到2013年几乎是以指数的方式发展，对于搞信号和图像的人来说应该是人人皆知。但是2013年的转折点说明CS领域的问题差不多了，在应用方面的表现也是差强人意。
+
+# CS的困境一：前提条件多
+ 1. 信号必须是稀疏的。Gaussian 噪声就不是的，所以就有各种L2约束出来
+ 2. 字典是合适的。在我处理的流场问题中，流场是很复杂的，构造合适的字典都很麻烦
+
+# CS的困境二：计算速度慢
+CS的计算速度在1-d信号的处理上能差不多让人满意，而在图像处理上，一幅$512\times 512$的图像都是相当耗时，耗时到什么程度呢？可以参看Donoho在2005年的一篇文章（参考文献1），结合TV约束，差不多要半个小时才能处理这个简单的问题，相同的问题描述情况下，Rolling Guidance Filter 数秒钟就可以解决了。
+
+# CS的困境三：内存要求高
+
+我在处理流场的时候，一个小的流场块$(32\times32)$采用SeDuMi的SOCP(或者LP)求解，Matlab的内存就受不了，别提更大的图像，所以提出的一些减少内存需要的算法，这些算法又进一步开销了时间代价。
+
+结论是明显的：CS搞搞理论是合适的，CS的正向问题可以在工程中大量应用的。然而，CS的逆向问题（通常也是关键问题）效果一般，不适合做图像信号的“大数据”处理。
+
+
+
+##参考文献
+- Starck J L, Elad M, Donoho D L. Image decomposition via the combination of sparse representations and a variational approach[J]. Image Processing, IEEE Transactions on, 2005, 14(10): 1570-1582.
+- Donoho D L. Compressed sensing[J]. Information Theory, IEEE Transactions on, 2006, 52(4): 1289-1306.
+- Candes E, Romberg J. l1-magic: Recovery of sparse signals via convex programming[J]. URL: www. acm. caltech. edu/l1magic/downloads/l1magic. pdf, 2005, 4: 14.
+- [陆吾生老师主页](http://www.ece.uvic.ca/~wslu/)
+- [陆吾生老师百度文库讲稿：2010年华东理工的东西吧](http://wenku.baidu.com/link?url=vZw4rxcIrTEGsNTWWHBxV6R7AWV42okEvmHy16GOp7YRj101krhjmR0LftJmU8k2ExBgTb2qTycApiV3wMyCYzZfXKtAxML39lYU5-QJDK3)

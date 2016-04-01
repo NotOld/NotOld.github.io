@@ -1,0 +1,21 @@
+---
+layout: post
+title: "Outlier 之我见"
+description: "最近对压缩感知这个方法进行了一点调研和实践，发现这个方法存在诸多问题（尤其是在图像领域应用中，前提条件多、速度慢、内存要求高），在实际使用中还是很有局限的。个人从自身的体验和web of science的统计数据来看，压缩感知的技术的这股热火从06年烧了10年，已近差不多了。"
+category: '压缩感知'
+---
+
+
+#Outlier 之我见
+从14年初博士开题到现在2016年初我一直在做流场数据的outlier的检测,这个问题的通俗描述也就是在一锅大米中挑老鼠屎. 处理这个问题可以很简单,用人工的方法将一颗颗老鼠屎挑出来也就行了;如果采用计算机编程来解决这个问题,这个问题的解决可以更加自动化的进行,也对技术层面提出了不少的挑战!
+
+## Outlier的模型
+与其说是建立outlier的模型,实质上是对信号进行一个全面的建模,有了模型才能提出方法,评价方法.
+## Outlier的自动处理办法
+
+##
+xxx
+$x^2=4$
+
+##参考文献
+- Mitra, Kaushik, Ashok Veeraraghavan, and Rama Chellappa. "Robust rvm regression using sparse outlier model." Computer Vision and Pattern Recognition (CVPR), 2010 IEEE Conference on. IEEE, 2010.

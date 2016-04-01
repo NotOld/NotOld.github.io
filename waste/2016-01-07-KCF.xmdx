@@ -1,0 +1,14 @@
+---
+layout: post
+title: "Kernelized Correlation Filters(KCF)算法"
+description: "目前在online visual tracking这个领域，已经涌现出很多的跟踪算法，比较知名如TLD，Struck，OAB，CT 等等。但是能做到非常快速而且效果还不错的相对就较少了，好多算法都是刚刚能实时，而且还是在图像分辨率不是很大的情况下。"
+category: '跟踪算法'
+---
+
+
+#Kernelized Correlation Filters(KCF)算法
+
+目前在online visual tracking这个领域，已经涌现出很多的跟踪算法，比较知名如TLD，Struck，OAB，CT 等等。但是能做到非常快速而且效果还不错的相对就较少了，好多算法都是刚刚能实时，而且还是在图像分辨率不是很大的情况下。
+
+##参考文献
+- [详细blog链接](http://www.skyoung.org/kcf-tracking-method/)

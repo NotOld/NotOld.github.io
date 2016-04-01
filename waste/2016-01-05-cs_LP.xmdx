@@ -1,0 +1,58 @@
+---
+layout: post
+title: "为什么压缩感知中的L1优化问题是一个LP问题？"
+description: "压缩感知从Donoho在2006年提出（*compressed sensing*），已经火了10年了，这篇文章也是被引用次数高达14300多，这个数字从侧面说明了该技术在各个领域中均可大有作为的同时也说明了Donoho在相关理论上给出的极大突破（一堆公式我是完全没看懂）。我是在12年左右，从陆吾生先生的华东理工的压缩感知视频中了解到该技术的，也就是只知道怎么用，正好最近的研究可以用上该理论，所以来回顾下这个理论。从基本的问题开始。"
+category: '压缩感知'
+---
+
+
+#为什么压缩感知中的L1优化问题是一个LP问题？
+
+
+压缩感知从Donoho在2006年提出（*compressed sensing*），已经火了10年了，这篇文章也是被引用次数高达14300多，这个数字从侧面说明了该技术在各个领域中均可大有作为的同时也说明了Donoho在相关理论上给出的极大突破（一堆公式我是完全没看懂）。我是在12年左右，从陆吾生先生的华东理工的压缩感知视频中了解到该技术的，也就是只知道怎么用，正好最近的研究可以用上该理论，所以来回顾下这个理论。从基本的问题开始。
+
+# 何为压缩感知？
+压缩感知的前提是信号<img src="http://www.forkosh.com/mathtex.cgi? \Large x">在某种字典的描述下都是稀疏的，然后随机非时域采样得到一个采样信号<img src="http://www.forkosh.com/mathtex.cgi? \Large y">。我们就可以通过元素个数比较少的y得到（完全恢复）x。
+具体的我就不细谈了哈。
+
+直接上公式，简单假设说有一个稀疏信号<img src="http://www.forkosh.com/mathtex.cgi? \Large x \in R^n">中有很多都是0元素，我们在一个低矮的矩形随机矩阵<img src="http://www.forkosh.com/mathtex.cgi? \Large D_{m\times n}">的运算下得到采样信号<img src="http://www.forkosh.com/mathtex.cgi? \Large y = D x\in R^m}">,值得注意的是其中<img src="http://www.forkosh.com/mathtex.cgi? \Large m\ll n}">。这样 就实现了信号的压缩感知，而压缩感知之所以敢叫感知，不是这种正向的矩阵乘法，而是已知<img src="http://www.forkosh.com/mathtex.cgi? \Large y}">和<img src="http://www.forkosh.com/mathtex.cgi? \Large D}">能“无损失”的恢复到<img src="http://www.forkosh.com/mathtex.cgi? \Large x}">。这个过程就是一个优化方程。
+
+#数学模型
+
+最原始的问题是这样的
+
+<img src="http://www.forkosh.com/mathtex.cgi? \Large min \quad  \|x\|_0\\s.t \quad Dx = y">
+
+这个问题是一个排列组合问题，也就是所谓的NP难问题，很难办。Candes 在2005年就发现了L1 norm 具有些性质，能使得求出来的解是稀疏的，也就是把这里的0换成1，还是有效的，并且在工程上大家都这么使用，Donoho也是听了Candes说了，才有2006年的文章，Donoho说在一定条件下（这个就有一堆大牛去研究这个条件，也就是各种bounds），这个问题和下面这个问题是等效的。
+
+<img src="http://www.forkosh.com/mathtex.cgi? \Large min \quad  \|x\|_1\\s.t \quad Dx = y">
+
+然后，就一句话说这个问题是个LP（linear programming）的问题。
+
+#为何是LP问题？
+我开先是没有细看Donoho的文章的（看不懂呀），后来我四方求援想明白了，再在文章中去看，大神其实也是有推导的。在这个之前，我先说说LP问题的标准形式
+
+<img src="http://www.forkosh.com/mathtex.cgi? \Large min \quad  C^Tx\\s.t \quad Ax = y\\ \quad \quad \quad x\geq 0">
+
+想明白了其实很容易，就搞两个变量替换下就行了 
+<img src="http://www.forkosh.com/mathtex.cgi? \Large x = x_+-x_-">,在搞一个变量<img src="http://www.forkosh.com/mathtex.cgi? \Large \theta = \left [
+\begin{array}{c}
+            x_+ \\
+            x_- 
+          \end{array}
+\right]">.
+
+问题就变成了
+
+<img src="http://www.forkosh.com/mathtex.cgi? \Large min \quad  \|x\|_1 = \|x_+\|_1+\|x_-\|_1=C^T\theta\\s.t \quad Dx = D(x_+-x_-) = [D,-D]\theta= y\\ \theta \geq 0">
+
+事情就这样解决了。
+
+# 还有更多
+为何复数的L1 优化问题是一个SOCP的问题？Candes在2005年文章中提到的7种模型究竟都该如何解？还需要进一步的学习
+
+##参考文献
+- Donoho D L. Compressed sensing[J]. Information Theory, IEEE Transactions on, 2006, 52(4): 1289-1306.
+- Candes E, Romberg J. l1-magic: Recovery of sparse signals via convex programming[J]. URL: www. acm. caltech. edu/l1magic/downloads/l1magic. pdf, 2005, 4: 14.
+- [陆吾生老师主页](http://www.ece.uvic.ca/~wslu/)
+- [陆吾生老师百度文库讲稿：2010年华东理工的东西吧](http://wenku.baidu.com/link?url=vZw4rxcIrTEGsNTWWHBxV6R7AWV42okEvmHy16GOp7YRj101krhjmR0LftJmU8k2ExBgTb2qTycApiV3wMyCYzZfXKtAxML39lYU5-QJDK3)
