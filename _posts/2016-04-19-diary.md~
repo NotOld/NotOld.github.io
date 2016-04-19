@@ -1,0 +1,31 @@
+﻿---
+layout: post
+title: "学习日记20160419"
+description: "..."
+category: '日记'
+---
+
+
+#学习日记20160417#
+
+今天一定要把文章看完，并且吃透才行。文章的题目是High-breakdown robust multivariate methods.
+
+1.Robust Method实际上就是对Outlier的处理
+
+2.在Robust regression的问题中，outlier detection 与 robust regression是等效的。具体而言，从robust regression的残差（residual）中可以做outlier的检测，Conversely，如果outlier检测出来之后，remove或者down weight, 做robust regression也就是很容易的事情了。
+
+3.这篇文章主要集中在第一个问题，也就是做robust regression，利用residual 顺带做outlier的detection。原因是：We prefer this approach over the opposite direction because from a combinatorial viewport it is more feasible to search for sufficiently many “good” data points than to find all the “bad” data points.
+
+4.传统的robust multivariate estimator很难计算，但是也还是有几个方法比较好的。Minimum covariance determinant(MCD)方法，这是1984、1985年的东东。之后在MCD的基础之上 发展了Fast-MCD。这点还要再看看原始文章。
+
+
+
+
+
+
+
+
+
+
+
+
