@@ -1,5 +1,5 @@
-markdown: kramdown
-highlighter: rouge
+﻿markdown: kramdown
+highlighter:rouge
 permalink: blog/:year/:month/:day/:title.html
 paginate: 5
 paginate_path: page/:num
@@ -7,7 +7,7 @@ paginate_path: page/:num
 blog:
     name: NotOld                                                 # 博客名称
     description: 个人博客                                      # 博客描述
-    title: NO                                                  # 网页标题
+    title: NotOld                                                  # 网页标题
     url: notold.github.io                                # 博客地址
     qiniu:                                               # 七牛云地址
 author:
@@ -18,6 +18,19 @@ author:
     logo: http://i.imgur.com/XR5VdDA.jpg                       # logo地址
     url: xx                          # 博客地址
     douban: 
-        name:                                            # 豆瓣地址名称
-        key:               # 豆瓣API Key
+        name:   xx                                         # 豆瓣地址名称
+        key: xx               # 豆瓣API Key
+
+
+
+
+
+
+
+
+
+
+
+
+
 
