@@ -1,0 +1,34 @@
+---
+layout: post
+title: "本征正交分解Proper Orthogonal Decomposition (POD)学习"
+description: "POD方法确实又叫做主成分分析方法（Principal Component Analysis;PCA），以前我接触到了PCA方法，两者的数学本质（SVD）是一模一样的，都是对协方差矩阵进行分析，得到最大的Variance的信息（方向，幅值），但是应用的对象还是有些不同，这里主要是讲讲这些不同"
+category: '学习'
+---
+
+
+# POD方法的学习和特点
+
+POD方法确实又叫做主成分分析方法（Principal Component Analysis;PCA），以前我接触到了PCA方法，两者的数学本质（SVD）是一模一样的，都是对协方差矩阵进行分析，得到最大的Variance的信息（方向，幅值），但是应用的对象还是有些不同，这里主要是讲讲这些不同。
+
+## POD和PCA的不同
+1. PCA是一种自适应的数据分析(降维)的方法，也就是寻求“最佳”的基来表达原始数据信号。每个基都尝试去capture残余信号的最大能量。总之，PCA这种数学上的方法应用十分广泛，其中的一种应用便是POD.
+2. POD方法是PCA的一种具体应用。以流场的分析为例，随着时间的变化我们可以得到一系列的变化流场{$V_1,V_2,...,V_T$},每个流场$V_t\in R^{m\times n}$都不再是PCA中的列向量，现在是寻找这么多时间序列流场中的最基本的几个流动形式（flow model）.具体的做法是把每个流场都进行列向量化，然后构成一个大的流场数据矩阵$\bold{V}=[V_1(:),V_2(:),...,V_T(:)]\in R^{mn \times T}$, 这个形式之后就可以利用PCA的方式进行处理。在计算得到主成分之后，进行reshape操作得得$m \times n$的基本流场流动形式(flow models)
+3. 效果展示
+<img src="http://i4.piimg.com/323c574d1239190c.jpg">
+示例性质，原始列化的流场，分别是五个时刻的测量值。
+<img src="http://i4.piimg.com/8eaf7865e0ac7b41.jpg">
+这是五个列化的流场基
+
+### 结论
+1. POD 就是PCA，也就是SVD，当然中间存在的推导过程网上很多，就不再累赘的叙述。
+2. POD 的基有两个特点。a)越靠前，这个基capture的能量越多，这个性质可以用到数据降维操作中；b)越靠前，这个基就越光滑，这个结论和FFT的结论类似，该结论可以用到数据光滑操作上面，同时也可以应用到去噪去坏点等问题中。
+3. 原始的POD有几个问题。a)随着时间推演，流动模态在发生变化，用恒定的基去描述虽然可以达到整体最优，但是还不能随着时间自适应的去调整基的选择。b)原始的POD和PCA都是需要完整数据的参与，gappy POD的出现也就是为了解决数据存在残缺的情况。c）PCA/POD解决的都是线性空间的问题，对于问题本身是非线性的可能存在不足
+
+## 致谢
+[1]: http://zhanxw.com/blog/2011/02/kernel-pca-%E5%8E%9F%E7%90%86%E5%92%8C%E6%BC%94%E7%A4%BA/       "Kernel PCA 原理和演示" 
+[2]: http://www.cnblogs.com/zhangchaoyang/articles/2222048.html       "主成分分析PCA" 
+[3]: http://blog.sina.com.cn/s/blog_59d470310100j7f1.html       "主成分分析 PCA算法" 
+
+
+
+
